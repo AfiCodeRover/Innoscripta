@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\API;
 
+use App\Jobs\API\FetchGuardianDataJob;
 use App\Jobs\API\FetchNewsAPIDataJob;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Bus;
@@ -28,6 +29,7 @@ class ScheduleDataFetchingJobs extends Command
     {
         Bus::chain([
             new FetchNewsAPIDataJob(),
+            new FetchGuardianDataJob(),
         ])->dispatch();
         $this->info('The jobs dispatched successfully.');
     }
