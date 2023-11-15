@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('dispatch:fetching-data-jobs')->everyMinute();
+        $schedule->command('dispatch:fetching-data-jobs')->dailyAt("00:00");
     }
 
     /**
