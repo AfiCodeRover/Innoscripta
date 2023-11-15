@@ -41,10 +41,7 @@ class News extends Model
      */
     public function setPublishAtAttribute($value)
     {
-        // Convert the incoming date string to a Carbon instance
-        $carbonDate = Carbon::createFromFormat('Y-m-d\TH:i:s\Z', $value);
-
         // Set the attribute with the desired format
-        $this->attributes['publish_at'] = $carbonDate->toDateTimeString();
+        $this->attributes['publish_at'] = Carbon::parse($value)->format('Y-m-d H:i:s');
     }
 }
