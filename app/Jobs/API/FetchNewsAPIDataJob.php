@@ -17,21 +17,28 @@ class FetchNewsAPIDataJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    private $newsApiService, $newsAPIDBService;
+
+    public function __construct(NewsAPIService $newsApiService, NewsAPIDBService $newsAPIDBService) {
+        $this->newsApiService = $newsApiService;
+        $this->newsAPIDBService  = $newsAPIDBService;
+    }
+
     /**
      * Execute the job.
      */
-    public function handle(NewsAPIDBService $newsAPIDBService): void
+    public function handle(): void
     {
         try {
-            $newsApiService = new NewsAPIService(env('NEWSAPI_KEY'));
-            $latestNews = $newsApiService->fetchLatestNews();
+            $this->newsApiService->setCredentials(config("api_creadentials.news_api_key"));
+            $latestNews = $this->newsApiService->fetchLatestNews();
             foreach($latestNews as $category => $value){
                 foreach($value['data']['articles'] as $news){
                 
                     if($news['title'] == '[Removed]') continue;
     
                     //insert to database
-                    $newsAPIDBService->insertNews($news, $category);
+                    $this->newsAPIDBService->insertNews($news, $category);
                     
                 }
             }
