@@ -117,9 +117,88 @@ sail artisan test
 
 ## 🚀 API-Endpoints <a name = "api"></a>
 
-The API provides the following endpoints:
+The API provides the following endpoint(s):
 
-- GET /api/news: Returns a paginated list of all news articles in the database, with optional filters by source, category, language, and country.
-- GET /api/news/{id}: Returns a single news article by its id.
-- GET /api/sources: Returns a list of all news sources that are supported by the project. 
+- POST /api/v1/news/search
 
+## Description
+
+This end-point allows you to search for news articles from various sources and categories. You can specify the keywords, the number of results, and the date range of the articles.
+
+### Parameters
+    •  query: The query string to search in title. This parameter is required and cannot be empty.
+
+    •  category(optional): This parameter for filtering data by their categories, that includes (business, entertainment, general, sports, technology, news, and science).
+
+    •  source(optional): This parameter is for filtering data by their source, exp:Forbes, UPROXX, NBCSports.com, and etc.
+
+    •  author(optional): This parameter is for filtering data by their author.
+
+    •  from_date(optional): The from_date of the articles to return. The format is YYYY-MM-DD.
+
+    •  to_date(optional): The to_date of the articles to return. The format is YYYY-MM-DD.
+
+### Response
+The response is a JSON object with the following fields:
+
+      -  results: The number of articles returned.
+
+      -  data: An array of articles, each with the following fields:
+
+        •  title: The title of the article.
+
+        •  author: The author of the article.
+
+        •  category: The category of the article.
+
+        •  source: The source of the article.
+
+        •  content: The content of the article, truncated to 200 characters.
+
+        •  reference_url: The URL of the article.
+
+        •  publish_date: The date of the article, in YYYY-MM-DD HH:MM:SS format.
+
+### Example
+The following is an example of a request and a response for the end-point /api/v1/news/search:
+
+
+```
+  Post /api/v1/news/search
+
+  Host: localhost
+
+  Content-Type: application/json
+  
+
+  {
+    "query": "technology",
+    
+    "category": "global"
+  } 
+
+```
+
+
+
+#### Json Response
+
+```
+{ 
+
+    "results": 1,
+
+    "data": [
+      {
+        "title": "Micro-mobility Market to surpass $231 Bn by 2032.",
+        "author": "Global Market Insights Inc.",
+        "category": "technology",
+        "source": "GlobeNewswire",
+        "content": "Selbyville, Delaware, Nov. 14, 2023 (GLOBE NEWSWIRE)...",
+        "reference_url": "url to website",
+        "publish_date": "2023-11-14 23:00:00"
+      }
+    ]
+}
+
+```
