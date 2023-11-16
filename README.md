@@ -108,20 +108,25 @@ To install and run this project with this option, you need webserver like (xampp
 ```
 composer install
 ```
+4. Create database with tools like phpmyadmin
 
-4. Run php artisan migrate to create the database tables.
+5. Change DB_DATABASE with your prefer database name
+
+6. Change from mysql to DB_HOST to 127.0.0.1
+
+7. Run php artisan migrate to create the database tables.
 
 ```
 php artisan migrate
 ```
 
-5. Run php artisan queue:work to start the queue worker.
+8. Run php artisan queue:work to start the queue worker.
 
 ```
 php artisan queue:work
 ```
 
-6. Run php artisan schedule:run to start the scheduler that fetches data from the news sources every hour.
+9. Run php artisan schedule:run to start the scheduler that fetches data from the news sources every hour.
 
 ```
 php artisan schedule:run
