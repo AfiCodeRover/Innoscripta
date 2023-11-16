@@ -9,7 +9,8 @@ use App\Services\Response\NewsService;
 
 class NewsController extends Controller
 {
-    public function search(NewsSearchRequest $newsSearchRequest, NewsService $newsService)  {
+    public function search(NewsSearchRequest $newsSearchRequest, NewsService $newsService)
+    {
         $result = $newsService->search($newsSearchRequest);
         $collection = NewsResource::collection($result);
         return response([
