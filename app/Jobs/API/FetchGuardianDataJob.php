@@ -17,16 +17,23 @@ class FetchGuardianDataJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    private $guardianAPIService, $guardianDBService;
+
+    public function __construct(GuardianAPIService $guardianAPIService, GuardianDBService $guardianDBService) {
+        $this->guardianAPIService = $guardianAPIService;
+        $this->guardianDBService  = $guardianDBService;
+    }
+
     /**
      * Execute the job.
      */
-    public function handle(GuardianDBService $guardianDBService): void
+    public function handle(): void
     {
         try {
-            $guardianService = new GuardianAPIService(env('GUARDIANAPI_KEY'));
-            $latestNews = $guardianService->fetchLatestNews();
+            $this->guardianAPIService->setCredentials(config("api_creadentials.guardian_api_key"));
+            $latestNews = $this->guardianAPIService->fetchLatestNews();
             foreach($latestNews['data']['response']['results'] as $news) {
-                $guardianDBService->insertNews($news);
+                $this->guardianDBService->insertNews($news);
             }
         } catch (\Throwable $th) {
             //throw $th;

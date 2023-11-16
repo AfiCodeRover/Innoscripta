@@ -14,17 +14,23 @@ class FetchMediaStackDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $mediaStackAPIService, $mediaStackDBService;
+
+    public function __construct(MediaStackAPIService $mediaStackAPIService, MediaStackDBService $mediaStackDBService) {
+        $this->mediaStackAPIService = $mediaStackAPIService;
+        $this->mediaStackDBService  = $mediaStackDBService;
+    }
 
     /**
      * Execute the job.
      */
-    public function handle(MediaStackDBService $mediaStackDBService): void
+    public function handle(): void
     {
         try {
-            $mediastackService = new MediaStackAPIService(env('MEDIASTACKAPI_KEY'));
-            $latestNews = $mediastackService->fetchLatestNews();
+            $this->mediaStackAPIService->setCredentials(config("api_creadentials.mediastack_api_key"));
+            $latestNews = $this->mediaStackAPIService->fetchLatestNews();
             foreach($latestNews['data']['data'] as $news) {
-                $mediaStackDBService->insertNews($news);
+                $this->mediaStackDBService->insertNews($news);
             }
         } catch (\Throwable $th) {
             //throw $th;

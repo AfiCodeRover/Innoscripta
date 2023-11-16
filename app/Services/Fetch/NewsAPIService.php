@@ -22,9 +22,8 @@ class NewsAPIService implements FetchServiceContract
     // The mock object for the NewsAPI service
     private $mockNewsApiService;
 
-    // The constructor that accepts the API key and the mock object
-    public function __construct(string $apiKey, $mockNewsApiService = null)
-    {
+    // The setter that accepts the API key and the mock object
+    public function setCredentials(string $apiKey, $mockNewsApiService = null) : void {
         $this->apiKey = $apiKey;
         $this->mockNewsApiService = $mockNewsApiService;
     }
